@@ -54,7 +54,9 @@ docker run -v ./scripts:/data wrk -t <threads> -c <connections> -d <duration> -s
 
 ### Script Lua pour `wrk`
 
-Le script Lua `multi_http.lua` permet de tester plusieurs URLs avec des requêtes aléatoires, de suivre le nombre de requêtes par URL, et de collecter des statistiques sur les réponses et la latence. Il simule également des délais aléatoires entre les requêtes pour refléter des connexions plus réalistes. Il y a des valeurs (urls, delay_ms, range_latency) qui peuvent être modifiées dans le script selon vos besoins.
+Le script Lua `multi_http.lua` permet de tester plusieurs URLs avec des requêtes aléatoires, de suivre le nombre de requêtes par URL, et de collecter des statistiques sur les réponses et la latence. Il simule également des délais aléatoires entre les requêtes pour refléter des connexions plus réalistes.
+
+Il y a des valeurs (**urls**, **delay_ms**, **range_latency**) qui peuvent être modifiées dans le script selon vos besoins.
 
 Exemple : `docker run -v ./scripts:/data wrk -c 5 -t 2 -d 5 -s multi_http.lua --timeout 2s https://about.google/`
 
