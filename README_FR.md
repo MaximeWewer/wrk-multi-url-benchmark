@@ -54,43 +54,55 @@ docker run -v ./scripts:/data wrk -t <threads> -c <connections> -d <duration> -s
 
 ### Script Lua pour `wrk`
 
-Le script Lua `multi_http.lua` permet de tester plusieurs URLs avec des requêtes aléatoires, de suivre le nombre de requêtes par URL, et de collecter des statistiques sur les réponses et la latence. Il simule également des délais aléatoires entre les requêtes pour refléter des connexions plus réalistes.
+Ce script permet de :
 
-Il y a des valeurs (**urls**, **delay_ms**, **range_latency**) qui peuvent être modifiées dans le script selon vos besoins.
+- Envoyer des requêtes à plusieurs URLs simultanément
+- Suivre le nombre de requêtes par URL
+- Simuler des délais aléatoires entre les requêtes pour des connexions plus réalistes
+- Exporter les statistiques dans un fichier JSON
 
-Exemple : `docker run -v ./scripts:/data wrk -c 5 -t 2 -d 5 -s multi_http.lua --timeout 2s https://about.google/`
-
-Résultats :
+Les valeurs que vous pouvez modifier sont au début du script :
 
 ```text
-Running 5s test @ https://about.google/
-  2 threads and 5 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    63.13ms   27.56ms 164.19ms   74.03%
-    Req/Sec    15.52      6.86    30.00     86.67%
-  158 requests in 4.59s, 2.70MB read
-  Socket errors: connect 0, read 0, write 0, timeout 4
-  Non-2xx or 3xx responses: 40
-Requests/sec:     34.40
-Transfer/sec:    601.36KB
---------------------------------------------------------
-URL '/' was requested 22 times
-URL '/stories' was requested 17 times
-URL '/products' was requested 15 times
-URL 'https://www.google.com' was requested 29 times
-Thread 1 made 83 requests and handled 80 responses (96.39%)
+local urls = {
+   { path = "/", method = "GET", headers = nil, body = nil },
+   { path = "/stories", method = "GET", headers = nil, body = nil },
+   { path = "/products", method = "GET", headers = nil, body = nil },
+   { path = "https://www.google.com", method = "GET", headers = nil, body = nil }
+}
+local min_delay_ms = 10
+local max_delay_ms = 100
+local range_latency = { 50, 75, 95, 99.99 }
+local filename = "wrk_summary"
+```
 
-URL '/' was requested 22 times
-URL '/stories' was requested 20 times
-URL '/products' was requested 22 times
-URL 'https://www.google.com' was requested 15 times
-Thread 2 made 79 requests and handled 78 responses (98.73%)
+Exemple : `docker run -v ./scripts:/data wrk -s multi_http.lua -c 100 -t 4 -d 5 --timeout 2s https://about.google/`
 
-Total made 162 requests and handled 158 responses (97.53%)
+Résultats en json:
 
-Latency Percentiles (in ms):
-  50th percentile: 52 ms
-  75th percentile: 82 ms
-  95th percentile: 116 ms
-  99.99th percentile: 164 ms
+```json
+{
+    "data_received_MB": 41.15,
+    "data_received_MB_per_second": 8.05,
+    "errors": {
+        "non_2xx_or_3xx_responses": 648,
+        "timeouts": 134
+    },
+    "latency_percentiles_in_ms": {
+        "50th": 116.61,
+        "75th": 186.09,
+        "95th": 355.12,
+        "99.99th": 764.28
+    },
+    "requests_per_second": 477.52,
+    "response_success_percentage": 97.87,
+    "total_requests": 2494,
+    "total_responses": 2441,
+    "url_requests": {
+        "/": 681,
+        "/products": 610,
+        "/stories": 546,
+        "https://www.google.com": 657
+    }
+}
 ```
