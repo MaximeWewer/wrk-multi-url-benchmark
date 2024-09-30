@@ -34,14 +34,13 @@ docker run -v ./scripts:/data wrk -t <threads> -c <connections> -d <duration> -s
                    This option is already handled in the script,
                    so it's unnecessary here.
 
-    --timeout:     Timeout after which a request fails if no
-                   response is received.
-                   The default value is 2 seconds.
+    --timeout:     Timeout after which a request fails if no response
+                   is received. The default value is 2 seconds.
 ```
 
 ### Impact of `-c` and `-t` Parameters
 
-- **`-c, --connections`** : Sets the total number of HTTP connections to keep open. Each thread manages a certain number of connections, determined by `N = connections / threads`, so if you have `-c 100 -t 4`, each thread manages 25 connections . A higher number of connections tests how the server handles a high simultaneous load, but it can also overload the client or server if set too high.
+- **`-c, --connections`** : Sets the total number of HTTP connections to keep open. Each thread manages a certain number of connections, determined by `N = connections / threads`, so if you have `-c 100 -t 4`, each thread manages 25 connections . A higher number of connections test how the server handles a high simultaneous load, but it can also overload the client or server if set too high.
 
 - **`-t, --threads`** : Sets the total number of threads used. Each thread executes HTTP requests in parallel. More threads maximize the generation of simultaneous requests, but this also depends on the CPU capabilities and system limits.
 
@@ -55,7 +54,7 @@ docker run -v ./scripts:/data wrk -t <threads> -c <connections> -d <duration> -s
 
 ### Lua Script for wrk
 
-This script allows you to :
+`multi_http.lua` script allows you to :
 
 - Send requests to multiple URLs simultaneously
 - Track the number of requests per URL

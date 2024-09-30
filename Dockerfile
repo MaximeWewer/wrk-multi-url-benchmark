@@ -1,7 +1,7 @@
-# Étape 1 : Build de wrk
+# Step 1: Build wrk
 FROM alpine:3.20 AS builder
 
-# Installer les dépendances nécessaires pour la compilation
+# Install the necessary dependencies for compilation
 RUN apk add --no-cache \
     build-base \
     openssl-dev \
@@ -9,27 +9,27 @@ RUN apk add --no-cache \
     linux-headers \
     git
 
-# Télécharger et construire wrk
+# Download and build wrk
 WORKDIR /tmp
 RUN git clone https://github.com/wg/wrk.git && \
     cd wrk && \
     git checkout 4.2.0 && \
     make
 
-# Étape 2 : Image minimale avec wrk
+# Step 2: Minimal image with wrk
 FROM alpine:3.20
 
-# Installer les dépendances d'exécution
+# Install runtime dependencies
 RUN apk add --no-cache libgcc
 
-# Créer un volume pour charger les scripts Lua
+# Create a volume to load Lua scripts
 VOLUME /data
 
-# Définir le répertoire de travail par défaut
+# Set the default working directory
 WORKDIR /data
 
-# Copier le binaire wrk depuis l'image builder
+# Copy the wrk binary from the builder image
 COPY --from=builder /tmp/wrk/wrk /usr/local/bin/wrk
 
-# Exécuter l'outil wrk par défaut
+# Run wrk tool by default
 ENTRYPOINT ["wrk"]

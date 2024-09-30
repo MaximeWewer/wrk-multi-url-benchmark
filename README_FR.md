@@ -54,7 +54,7 @@ docker run -v ./scripts:/data wrk -t <threads> -c <connections> -d <duration> -s
 
 ### Script Lua pour `wrk`
 
-Ce script permet de :
+Le script `multi_http.lua` permet de :
 
 - Envoyer des requêtes à plusieurs URLs simultanément
 - Suivre le nombre de requêtes par URL
