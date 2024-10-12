@@ -13,7 +13,7 @@ Ensure you have the following tools installed on your machine:
 - Docker
 - JQ
 
-The script will automatically check for the installation of Docker and jq before executing the benchmark.
+The script will automatically check for the installation of Docker and JQ before executing the benchmark.
 
 ## Build WRK docker image
 
@@ -39,12 +39,13 @@ Use the Dockerfile to build your `wrk` Docker image: `docker build -t wrk:latest
 --duration       Test duration (default: 10s)"
 --script         Lua script to use (default: multi_http.lua)"
 --timeout        Request timeout (default: 2s)"
---url            Target URL (default: https://about.google/). To test multiple URLs, you need to edit this bash."
 --min-delay      Minimum delay in ms (default: 10)"
 --max-delay      Maximum delay in ms (default: 100)"
 --range-latency  Latency range (default: 50,75,95,99.99)"
 --filename       Output file name (default: wrk_results)"
 --show-stdout    Do not display stdout results (default: false)"
+--url            Target URL (default: https://about.google/). 
+                 To test multiple URLs, you need to edit this bash."
 ```
 
 ### Impact of `--connections` and `--threads` Parameters
