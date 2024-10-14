@@ -57,24 +57,24 @@ done
 
 ## Minimal URL config
     # urls = {
-    #     { path = "/", method = "GET", headers = nil, body = nil }
+    #     { path = "/", method = "GET", headers = nil, body = nil, weight = 1 }
     # }
 
 ## Multi URLs example :
     # urls = {
-    #    { path = "/", method = "GET", headers = nil, body = nil },
-    #    { path = "/stories", method = "GET", headers = nil, body = nil },
-    #    { path = "/products", method = "GET", headers = nil, body = nil },
-    #    { path = "https://www.google.com", method = "GET", headers = nil, body = nil }
+    #    { path = "/", method = "GET", headers = nil, body = nil, weight = 50 },
+    #    { path = "/stories", method = "GET", headers = nil, body = nil, weight = 95 },
+    #    { path = "/products", method = "GET", headers = nil, body = nil, weight = 10 },
+    #    { path = "https://www.google.com", method = "GET", headers = nil, body = nil, weight = 30 }
     # }
 
 cat <<EOL > ./scripts/wrk_config.txt
 
 urls = {
-    { path = "/", method = "GET", headers = nil, body = nil },
-    { path = "/stories", method = "GET", headers = nil, body = nil },
-    { path = "/products", method = "GET", headers = nil, body = nil },
-    { path = "https://www.google.com", method = "GET", headers = nil, body = nil }
+    { path = "/", method = "GET", headers = nil, body = nil, weight = 100  },
+    { path = "/stories", method = "GET", headers = nil, body = nil, weight = 50 },
+    { path = "/products", method = "GET", headers = nil, body = nil, weight = 50 },
+    { path = "https://www.google.com", method = "GET", headers = nil, body = nil, weight = 20 }
 }
 min_delay_ms = $MIN_DELAY_MS
 max_delay_ms = $MAX_DELAY_MS

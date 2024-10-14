@@ -11,9 +11,9 @@ Ce document explique comment utiliser `wrk` avec un script Lua afin de réaliser
 Assurez-vous que les outils suivants sont installés sur votre ordinateur :
 
 - Docker
-- JQ
+- Jq
 
-Le script vérifiera automatiquement l'installation de Docker et de JQ avant d'exécuter le benchmark.
+Le script vérifiera automatiquement l'installation de Docker et de Jq avant d'exécuter le benchmark.
 
 ## Créer une image Docker WRK
 
@@ -58,7 +58,7 @@ Utilisez le Dockerfile pour créer votre image Docker `wrk` : `docker build -t 
 
 Le script `multi_http.lua` permet de :
 
-- Envoyer des requêtes à plusieurs URLs simultanément
+- Envoyer des requêtes à plusieurs URLs simultanément et leur donner un poid d'importance
 - Suivre le nombre de requêtes par URL
 - Simuler des délais aléatoires entre les requêtes pour des connexions plus réalistes
 - Exporter les statistiques dans un fichier JSON
@@ -67,7 +67,7 @@ Le script crée un fichier de configuration `wrk_config.txt` dans le répertoire
 
 ```text
 urls = {
-    { path = "/", method = "GET", headers = nil, body = nil }
+    { path = "/", method = "GET", headers = nil, body = nil, weight = 100 }
 }
 min_delay_ms = [min_delay_value]
 max_delay_ms = [max_delay_value]

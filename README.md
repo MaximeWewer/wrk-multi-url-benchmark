@@ -11,9 +11,9 @@ This document explains how to use `wrk` with a Lua script to perform HTTP perfor
 Ensure you have the following tools installed on your machine:
 
 - Docker
-- JQ
+- Jq
 
-The script will automatically check for the installation of Docker and JQ before executing the benchmark.
+The script will automatically check for the installation of Docker and Jq before executing the benchmark.
 
 ## Build WRK docker image
 
@@ -58,7 +58,7 @@ Use the Dockerfile to build your `wrk` Docker image: `docker build -t wrk:latest
 
 `multi_http.lua` script allows you to :
 
-- Send requests to multiple URLs simultaneously
+- Send requests to multiple URLs simultaneously and give them weight
 - Track the number of requests per URL
 - Simulate random delays between requests for more realistic connections
 - Export the statistics to a JSON file
@@ -67,7 +67,7 @@ The script creates a configuration file `wrk_config.txt` in the `./scripts` dire
 
 ```text
 urls = {
-    { path = "/", method = "GET", headers = nil, body = nil }
+    { path = "/", method = "GET", headers = nil, body = nil, weight = 100 }
 }
 min_delay_ms = [min_delay_value]
 max_delay_ms = [max_delay_value]
